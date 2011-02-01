@@ -1,0 +1,2 @@
+EXTRA_DIST = bootstrap.sh README LICENSE
+SUBDIRS=src

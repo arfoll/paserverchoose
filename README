@@ -1,0 +1,7 @@
+paserverchoose by Brendan Le Foll, brendan <at> fridu <dot> net
+
+This code is based on padevchooser. Not much is left, but it was quicker to start this way.
+
+I haven't changed much in x11prop and the code should still be compatible with now 'dead' upstream padevchooser
+
+This code is still GPLv2 and all credits go to padevchooser and Lennart Poettering <mzcnqripubbfre (at) 0pointer (dot) de> for those parts.
