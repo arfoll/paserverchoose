@@ -28,13 +28,14 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <argp.h>
+#include <avahi-client/lookup.h>
 
 #include <pulse/pulseaudio.h>
-#include <pulse/browser.h>
 #include <pulse/glib-mainloop.h>
 
 #include <X11/Xlib.h>
 
+#include "avahibrowse.h"
 #include "x11prop.h"
 
 const char *argp_program_version = "paserverchoose 0.1";
@@ -60,6 +61,7 @@ struct arguments
 };
 
 static gchar* get_pulse_server(Display *display) {
+
     char t[256];
     char *current_server = NULL;
 
@@ -111,8 +113,7 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state)
 static struct argp argp = {options, parse_opt, args_doc, doc};
 
 int main(int argc, char *argv[]) {
-    pa_browser *b = NULL;
-    pa_glib_mainloop *m = NULL;
+
     Display *display;
     struct arguments arguments;
 
@@ -123,12 +124,6 @@ int main(int argc, char *argv[]) {
 
     argp_parse (&argp, argc, argv, 0, 0, &arguments);
 
-    m = pa_glib_mainloop_new(NULL);
-
-    if (!(b = pa_browser_new(pa_glib_mainloop_get_api(m)))) {
-        fprintf (stderr, "Avahi zeroconf service is not running.");
-        return -1;
-    }
     if (!(display = XOpenDisplay(NULL))) {
         fprintf(stderr, "Could not open display. Are you sure you are running this in X?");
         return -1;
@@ -136,12 +131,16 @@ int main(int argc, char *argv[]) {
 
     /* Set PA server */
     if (arguments.server) {
-      set_pulse_server(display, arguments.server);
-      fprintf (stdout, "Pulseaudio server set to %s\n", arguments.server);
+        set_pulse_server(display, arguments.server);
+        fprintf (stdout, "Pulseaudio server set to %s\n", arguments.server);
+    }
+    /* List PA servers */ 
+    else if (arguments.list) {
+        find_pulse_servers();
     }
     /* Get current PA server */
     else {
-      fprintf (stdout, "Current pulseaudio server is : %s\n", get_pulse_server(display));
+        fprintf (stdout, "Current pulseaudio server is : %s\n", get_pulse_server(display));
     }
 
     return 0;

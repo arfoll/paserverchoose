@@ -18,16 +18,12 @@ AC_PROG_LN_S
 AC_TYPE_SIGNAL
 AC_HEADER_STDC
 
-PKG_CHECK_MODULES(GUILIBS, [ gtk+-2.0 >= 2.10 libnotify libglade-2.0 gconf-2.0 libgnomeui-2.0 gnome-desktop-2.0])
-AC_SUBST(GUILIBS_CFLAGS)
-AC_SUBST(GUILIBS_LIBS)
-
 if test -d ../pulseaudio ; then
    PULSE_CFLAGS='-I$(top_srcdir)/../pulseaudio/src'
    PULSE_LIBS='-L$(top_srcdir)/../pulseaudio/src/.libs -lpulse -lpulse-mainloop-glib -lpulse-browse'
    echo "*** Found pulseaudio in ../pulseaudio, using that version ***"
 else
-   PKG_CHECK_MODULES(PULSE, [ libpulse >= 0.9.2 libpulse-browse >= 0.9.2 libpulse-mainloop-glib >= 0.9.2 ])
+   PKG_CHECK_MODULES(PULSE, [ libpulse >= 0.9.2 libpulse-mainloop-glib >= 0.9.2 ])
 fi
 
 AC_SUBST(PULSE_LIBS)

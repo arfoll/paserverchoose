@@ -4,4 +4,4 @@ This code is based on padevchooser. Not much is left, but it was quicker to star
 
 I haven't changed much in x11prop and the code should still be compatible with now 'dead' upstream padevchooser
 
-This code is still GPLv2 and all credits go to padevchooser and Lennart Poettering <mzcnqripubbfre (at) 0pointer (dot) de> for those parts.
+The avahibrowse.c module is mostly an adaptation of some sample code from the avahi documentation and is not particularly pretty or nice.
