@@ -6,12 +6,13 @@ Group: Applications/Multimedia
 License: GPLv2
 URL: https://github.com/arfoll/paserverchoose
 Sources:
-    - "%{name}-%{version}.tar.bz2"
+    - "%{name}-%{version}.tar.gz"
 Description: Enables to change the pulseaudio server and display available servers
 
 PkgConfigBR:
     - avahi-client
     - libpulse
     - libpulse-mainloop-glib
+    - x11
 Files:
     - "%{_bindir}/paserverchoose"

@@ -23,7 +23,7 @@ if test -d ../pulseaudio ; then
    PULSE_LIBS='-L$(top_srcdir)/../pulseaudio/src/.libs -lpulse -lpulse-mainloop-glib -lpulse-browse -lavahi-client'
    echo "*** Found pulseaudio in ../pulseaudio, using that version ***"
 else
-   PKG_CHECK_MODULES(PULSE, [ libpulse >= 0.9.2 libpulse-mainloop-glib >= 0.9.2  avahi-client ])
+   PKG_CHECK_MODULES(PULSE, [ libpulse >= 0.9.2 libpulse-mainloop-glib >= 0.9.2  avahi-client x11])
 fi
 
 AC_SUBST(PULSE_LIBS)
