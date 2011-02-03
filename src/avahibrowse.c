@@ -132,6 +132,11 @@ void find_pulse_servers() {
             break;       
     }
 
+    if (!services) {
+        fprintf(stderr, "No avahi enabled native pulseaudio servers found.\n");
+        return;
+    }
+
     /* Display result for all servers found */
     for (i = 0; i < services; i++) {
         if (avahi_simple_poll_iterate(simple_poll, NULL) != 0)
