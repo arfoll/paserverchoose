@@ -2,6 +2,6 @@ paserverchoose by Brendan Le Foll, brendan <at> fridu <dot> net
 
 This code is based on padevchooser. Not much is left, but it was quicker to start this way.
 
-I haven't changed much in x11prop and the code should still be compatible with now 'dead' upstream padevchooser
+I haven't changed anything in x11prop and the code should still be compatible with now 'dead' upstream padevchooser
 
 The avahibrowse.c module is mostly an adaptation of some sample code from the avahi documentation and is not particularly pretty or nice.

@@ -1,5 +1,5 @@
 AC_PREREQ(2.57)
-AC_INIT([paserverchoose],[0.1],[brendan (at) fridu (dot) net])
+AC_INIT([paserverchoose],[0.1.1],[brendan (at) fridu (dot) net])
 AC_CONFIG_SRCDIR([src/paserverchoose.c])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([foreign 1.9 -Wall])
@@ -18,16 +18,10 @@ AC_PROG_LN_S
 AC_TYPE_SIGNAL
 AC_HEADER_STDC
 
-if test -d ../pulseaudio ; then
-   PULSE_CFLAGS='-I$(top_srcdir)/../pulseaudio/src'
-   PULSE_LIBS='-L$(top_srcdir)/../pulseaudio/src/.libs -lpulse -lpulse-mainloop-glib -lpulse-browse -lavahi-client'
-   echo "*** Found pulseaudio in ../pulseaudio, using that version ***"
-else
-   PKG_CHECK_MODULES(PULSE, [ libpulse >= 0.9.2 libpulse-mainloop-glib >= 0.9.2  avahi-client x11])
-fi
+PKG_CHECK_MODULES(PASC, [ libpulse >= 0.9.2 libpulse-mainloop-glib >= 0.9.2  avahi-client x11])
 
-AC_SUBST(PULSE_LIBS)
-AC_SUBST(PULSE_CFLAGS)
+AC_SUBST(PASC_LIBS)
+AC_SUBST(PASC_CFLAGS)
 
 # If using GCC specifiy some additional parameters
 if test "x$GCC" = "xyes" ; then
