@@ -38,6 +38,9 @@
 #include "avahibrowse.h"
 #include "x11prop.h"
 
+#define P_SERVER "PULSE_SERVER"
+#define P_ID "PULSE_ID"
+
 const char *argp_program_version = "paserverchoose 0.1";
 const char *argp_program_bug_address = "<brendan@fridu.net>";
 static char doc[] = "paserverchoose -- a cli client to change the pulseaudio server";
@@ -46,10 +49,10 @@ static char args_doc[] = "ARG1 [STRING...]";
 
 /* The options we understand. */
 static struct argp_option options[] = {
-    {"display",  'd', 0,      0,  "Display current pulseaudio server"},
-    {"list",     'l', 0,      0,  "List all pulseaudio servers available"},
-    {"server",   's', 0,      0,  "Set pulseaudio server" },
-    { 0 }
+    {"display", 'd', 0, 0, "Display current pulseaudio server ", 0},
+    {"list", 'l', 0, 0, "List all pulseaudio servers available ", 0},
+    {"server", 's', 0, 0, "Set pulseaudio server", 0},
+    {0, 0, 0, 0, 0, 0}
 };
 
 /* Used by main to communicate with parse_opt. */
@@ -65,7 +68,7 @@ static gchar* get_pulse_server(Display *display) {
     char t[256];
     char *current_server = NULL;
 
-    current_server = g_strdup(x11_get_prop(display, "PULSE_SERVER", t, sizeof(t)));
+    current_server = g_strdup(x11_get_prop(display, P_SERVER, t, sizeof(t)));
 
     return current_server;
 }
@@ -73,15 +76,15 @@ static gchar* get_pulse_server(Display *display) {
 static void set_pulse_server(Display *display, gchar *server) {
 
     if (server)
-        x11_set_prop(display, "PULSE_SERVER", server);
+        x11_set_prop(display, P_SERVER, server);
     else
-        x11_del_prop(display, "PULSE_SERVER");
+        x11_del_prop(display, P_SERVER);
 
     /* This is used by module-x11-publish to detect whether the
      * properties have been altered. We delete this property here to
      * make sure that the module notices that it is no longer in
      * control */
-    x11_del_prop(display, "PULSE_ID");
+    x11_del_prop(display, P_ID);
 }
 
 /* Parse a single option. */
@@ -110,7 +113,7 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state)
 }
 
 /* The Parser */
-static struct argp argp = {options, parse_opt, args_doc, doc};
+static struct argp argp = {options, parse_opt, args_doc, doc, 0, 0, 0};
 
 int main(int argc, char *argv[]) {
 

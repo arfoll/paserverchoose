@@ -86,7 +86,6 @@ static void browse_callback(
     AVAHI_GCC_UNUSED AvahiLookupResultFlags flags,
     void* userdata) {
 
-    AvahiClient *c = userdata;
     assert(b);
 
     switch (event) {
@@ -128,7 +127,7 @@ void find_pulse_servers() {
 
     /* Discover all the services until AVAHI_BROWSER_ALL_FOR_NOW */
     while (!done) {
-        if (avahi_simple_poll_iterate(simple_poll, NULL) != 0)
+        if (avahi_simple_poll_iterate(simple_poll, 0) != 0)
             break;       
     }
 
@@ -139,7 +138,7 @@ void find_pulse_servers() {
 
     /* Display result for all servers found */
     for (i = 0; i < services; i++) {
-        if (avahi_simple_poll_iterate(simple_poll, NULL) != 0)
+        if (avahi_simple_poll_iterate(simple_poll, 0) != 0)
             break;
     }
 }

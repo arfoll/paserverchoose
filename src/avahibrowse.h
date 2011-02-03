@@ -1,6 +1,3 @@
-#ifndef foox11prophfoo
-#define foox11prophfoo
-
 /***
   This file is part of pulseaudio.
 
@@ -21,5 +18,3 @@
 ***/
 
 void find_pulse_servers();
-
-#endif

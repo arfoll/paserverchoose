@@ -1,6 +1,3 @@
-#ifndef foox11prophfoo
-#define foox11prophfoo
-
 /***
   This file is part of pulseaudio.
 
@@ -27,5 +24,3 @@
 void x11_set_prop(Display *d, const char *name, const char *data);
 void x11_del_prop(Display *d, const char *name);
 char* x11_get_prop(Display *d, const char *name, char *p, size_t l);
-
-#endif
