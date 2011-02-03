@@ -1,0 +1,17 @@
+Name: paserverchoose
+Summary: Pulseaudio server chooser
+Version: 0.1
+Release: 1
+Group: Applications/Multimedia
+License: GPLv2
+URL: https://github.com/arfoll/paserverchoose
+Sources:
+    - "%{name}-%{version}.tar.bz2"
+Description: Enables to change the pulseaudio server and display available servers
+
+PkgConfigBR:
+    - avahi-client
+    - libpulse
+    - libpulse-mainloop-glib
+Files:
+    - "%{_bindir}/paserverchoose"
