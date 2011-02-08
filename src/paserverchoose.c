@@ -102,7 +102,6 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state)
              arguments->list = 1;
              break;
          case 's':
-//             arguments->server = arg;
              arguments->server = state->argv[state->next];
              state->next = state->argc;
              break;
