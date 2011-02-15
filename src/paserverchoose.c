@@ -22,7 +22,11 @@
 #endif
 
 #include <string.h>
+#include <stdlib.h>
+#include <string.h>
+#include <dirent.h>
 #include <stdio.h>
+
 #include <errno.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -52,6 +56,7 @@ static struct argp_option options[] = {
     {"display", 'd', 0, 0, "Display current pulseaudio server ", 0},
     {"list", 'l', 0, 0, "List all pulseaudio servers available ", 0},
     {"server", 's', 0, 0, "Set pulseaudio server", 0},
+    {"reset", 'r', 0, 0, "Reset the pulseaudio server to use the local client", 0},
     {0, 0, 0, 0, 0, 0}
 };
 
@@ -59,7 +64,7 @@ static struct argp_option options[] = {
 struct arguments
 {
     char *args[2];                /* arg1 & arg2 */
-    int display, list;
+    int display, list, reset;
     char *server;
 };
 
@@ -105,6 +110,9 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state)
              arguments->server = state->argv[state->next];
              state->next = state->argc;
              break;
+         case 'r':
+             arguments->reset = 1;
+             break;
          default:
              return ARGP_ERR_UNKNOWN;
        }
@@ -122,6 +130,7 @@ int main(int argc, char *argv[]) {
     /* Default values. */
     arguments.display = 0;
     arguments.list = 0;
+    arguments.reset = 0;
     arguments.server = NULL;
 
     argp_parse (&argp, argc, argv, 0, 0, &arguments);
@@ -135,6 +144,35 @@ int main(int argc, char *argv[]) {
     if (arguments.server) {
         set_pulse_server(display, arguments.server);
         fprintf (stdout, "Pulseaudio server set to %s\n", arguments.server);
+    }
+    /* Reset PA server to default client */
+    else if (arguments.reset) {
+        char server[512] = "{";
+        struct dirent *dp;
+        char *path = getenv("HOME");
+        strcat (path, "/.pulse");
+        DIR *pulse_dir = opendir(path);
+
+        printf("path is : %s\n", path);
+        while ((dp=readdir(pulse_dir)) != NULL) {
+            char *extract = strstr(dp->d_name, "runtime");
+            if (extract != NULL) {
+                if (!strcmp ("runtime", extract)) {
+                    /* FIXME : what happens when hashes aren't 32 in lenght? */
+                    strncat (server, dp->d_name, 32);
+                    strcat (server, "}unix:");
+                    /* start }unix:/home/user/.pulse/ */
+                    strcat (server, path);
+                    /* }unix:/home/user/.pulse/xxx-runtime */
+                    strcat (server, dp->d_name);
+                    /* }unix:/home/user/.pulse/xxx-runtime/native */
+                    strcat (server, "/native");
+                    fprintf (stdout, "Default server is : %s\n", server);
+                    set_pulse_server(display, server);
+                }
+            }
+        }
+        closedir(pulse_dir);
     }
     /* List PA servers */ 
     else if (arguments.list) {
