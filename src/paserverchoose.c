@@ -147,32 +147,7 @@ int main(int argc, char *argv[]) {
     }
     /* Reset PA server to default client */
     else if (arguments.reset) {
-        char server[512] = "{";
-        struct dirent *dp;
-        char *path = getenv("HOME");
-        strcat (path, "/.pulse");
-        DIR *pulse_dir = opendir(path);
-
-        printf("path is : %s\n", path);
-        while ((dp=readdir(pulse_dir)) != NULL) {
-            char *extract = strstr(dp->d_name, "runtime");
-            if (extract != NULL) {
-                if (!strcmp ("runtime", extract)) {
-                    /* FIXME : what happens when hashes aren't 32 in lenght? */
-                    strncat (server, dp->d_name, 32);
-                    strcat (server, "}unix:");
-                    /* start }unix:/home/user/.pulse/ */
-                    strcat (server, path);
-                    /* }unix:/home/user/.pulse/xxx-runtime */
-                    strcat (server, dp->d_name);
-                    /* }unix:/home/user/.pulse/xxx-runtime/native */
-                    strcat (server, "/native");
-                    fprintf (stdout, "Default server is : %s\n", server);
-                    set_pulse_server(display, server);
-                }
-            }
-        }
-        closedir(pulse_dir);
+        set_pulse_server(display, NULL);
     }
     /* List PA servers */ 
     else if (arguments.list) {
